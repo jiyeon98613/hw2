@@ -15,7 +15,57 @@ std::string convToLower(std::string src)
     to a set of words based on the criteria given in the assignment **/
 std::set<std::string> parseStringToWords(string rawWords)
 {
+    //convert to lower case
+    convToLower(rawWords);
 
+    //create a set
+    set<string> keywords; 
+
+    //parse till the end of the rawWords
+    int curr = 0, cntr = 0, last_punc =0;
+    while(curr < rawWords.length())
+    {
+        //check if curr is punc or not
+        if(rawWords.at(curr)<= 'z' && rawWords.at(curr) >= 'a')   //alphabet
+        {
+            ++cntr;
+        } else                                                   //punc_mark
+        {
+            //debugger
+            cout << "punc: '" <<rawWords.at(curr) <<"'"<< endl;
+            cout << "last substr: "<<rawWords.substr(last_punc+1, cntr)<<endl;
+            if(cntr >= 2)
+            {
+                keywords.insert(rawWords.substr(last_punc+1, cntr)) ;
+            }
+
+            //reset cntr
+            cntr =0;
+
+            //update last_punc to current punc
+            last_punc = curr;
+
+        }
+        ++curr;
+    }
+    //check the last substring
+    if(cntr >= 0 )
+    {
+        //debugger
+        cout << "last substr: "<<rawWords.substr(last_punc+1, cntr)<<endl;
+        
+        keywords.insert(rawWords.substr(last_punc+1, cntr)) ;
+        
+    }
+
+    //debugger
+    cout << "Keywords: ";
+    for(set<string>::iterator it = keywords.begin(); it != keywords.end(); ++it)
+    {
+        cout << *it;
+    } cout << endl;
+    
+    return keywords;
 
 
 
