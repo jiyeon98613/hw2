@@ -2,6 +2,7 @@
 #include <sstream>
 #include <cctype>
 #include <algorithm>
+#include <set>
 #include "util.h"
 
 using namespace std;
@@ -16,27 +17,35 @@ std::string convToLower(std::string src)
 std::set<std::string> parseStringToWords(string rawWords)
 {
     //convert to lower case
-    convToLower(rawWords);
-
+    rawWords = convToLower(rawWords);
+    cout << "new line: "<<rawWords<<endl;
     //create a set
-    set<string> keywords; 
+    set<string> keywords;
 
-    //parse till the end of the rawWords
     int curr = 0, cntr = 0, last_punc =0;
     while(curr < rawWords.length())
     {
         //check if curr is punc or not
-        if(rawWords.at(curr)<= 'z' && rawWords.at(curr) >= 'a')   //alphabet
+        if((rawWords[curr]<=122 && rawWords[curr]>=97) ||(rawWords[curr]>=48 && rawWords[curr]<=57))   //alphabet
         {
+            //cout<<rawWords[curr];
             ++cntr;
         } else                                                   //punc_mark
         {
+            //cout<<endl;
             //debugger
-            cout << "punc: '" <<rawWords.at(curr) <<"'"<< endl;
-            cout << "last substr: "<<rawWords.substr(last_punc+1, cntr)<<endl;
+            //cout << "punc: '" <<rawWords.at(curr) <<"'"<< endl;
+            //cout << "last substr: "<<rawWords.substr(last_punc+1, cntr)<<endl;
             if(cntr >= 2)
             {
-                keywords.insert(rawWords.substr(last_punc+1, cntr)) ;
+                if(last_punc == 0)  //when it's a new line
+                {
+                    keywords.insert(rawWords.substr(last_punc, cntr));
+                    cout << "last substr: "<<rawWords.substr(last_punc, cntr)<<endl;
+                }
+                else
+                {keywords.insert(rawWords.substr(last_punc+1, cntr)) ;
+                cout << "last substr: "<<rawWords.substr(last_punc+1, cntr)<<endl;}
             }
 
             //reset cntr
@@ -51,20 +60,26 @@ std::set<std::string> parseStringToWords(string rawWords)
     //check the last substring
     if(cntr >= 0 )
     {
+        string buf = rawWords.substr(last_punc+1, cntr);
         //debugger
-        cout << "last substr: "<<rawWords.substr(last_punc+1, cntr)<<endl;
         
-        keywords.insert(rawWords.substr(last_punc+1, cntr)) ;
+        if(buf.size()>=2)
+        {
+            cout << "last substr: "<<buf<<endl;
+            keywords.insert(buf) ;
+        }
+        
         
     }
 
     //debugger
+    /*
     cout << "Keywords: ";
     for(set<string>::iterator it = keywords.begin(); it != keywords.end(); ++it)
     {
-        cout << *it;
+        cout << *it<<", ";
     } cout << endl;
-    
+    */
     return keywords;
 
 

@@ -6,6 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include "product.h"
+#include "util.h"
+
 class Clothing: public Product {
 public:
     Clothing(const std::string category, const std::string name, double price, int qty, const std::string size, const std::string brand);

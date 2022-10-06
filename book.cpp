@@ -2,8 +2,10 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+
 #include "product.h"
 #include "book.h"
+#include "util.h"
 
 using namespace std;
 
@@ -16,13 +18,21 @@ Book::~Book(){}
 
 std::set<std::string> Book::keywords() const
 {
-    set<string> sth({ISBN_, author_, name_});
-    return sth;
+    std::set<std::string> kw;
+    vector<string> sth( {author_, name_});
+    for(string s : sth)
+    {
+        set<string> buf = parseStringToWords(s);
+        kw = setUnion(kw, buf);
+    }
+    kw.insert(ISBN_);
+    return kw;
 }
 
 std::string Book::displayString() const
 {
-    string str(getName() +" "+ author_+ " " + ISBN_);
+    string str(name_  + "\nAuthor: " + author_
+    + " ISBN: " + ISBN_ + "\n" + to_string(price_) + " " +to_string(qty_) + " left.");
     return str;
 }
 void Book::dump(std::ostream& os) const
@@ -37,4 +47,7 @@ std::string Book::getAuthor() const
 {
     return author_;
 }
-
+bool Book::isMatch(std::vector<std::string>& searchTerms) const
+{
+    return false;
+}

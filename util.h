@@ -14,24 +14,45 @@ template <typename T>
 std::set<T> setIntersection(std::set<T>& s1, std::set<T>& s2)
 {
     typename std::set<T> newSet;
-    for(typename std::set<T>::iterator it1 = s1.begin(); it1 != s1.end(); ++it1)
+    typename std::set<T> buffer;
+    typename std::set<T> buffer1;
+    if(s1.size() != 0)
     {
-        newSet.insert(s2.find(*it1));
+        buffer = s1;
+        buffer1 = s2;
     }
+    else
+    {
+        buffer = s2;
+        buffer1 = s1;
+    }
+    
+    for(typename std::set<T>::iterator it1 = buffer.begin(); it1 != buffer.end(); ++it1)
+    {
+        if(buffer1.find(*it1) != buffer1.end()) // if there is *it1 in s2
+        {
+            newSet.insert(*it1);
+        }
+    }
+    return newSet;
 }
 template <typename T>
 std::set<T> setUnion(std::set<T>& s1, std::set<T>& s2)
 {
     typename std::set<T> newSet;
+    typename std::set<T> buffer = s2;
     for(typename std::set<T>::iterator it1 = s1.begin(); it1 != s1.end(); ++it1)
     {
-        s2.erase.find(*it1);
-        newSet.insert(*it1);
+        if(s2.find(*it1) != s2.end()) //if there is *it1 in s2
+        {
+            buffer.erase(*it1);
+        }
+        
     }
-    for(typename std::set<T>::iterator it2 = s2.begin(); it2 != s2.end(); ++it2)
-    {
-        newSet.insert(*it2);
-    }
+    newSet = s1;
+    newSet.insert(buffer.begin(), buffer.end());
+    
+    return newSet;
 }
 
 /***********************************************/

@@ -6,6 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include "product.h"
+#include "util.h"
+
 class Movie: public Product {
 public:
     Movie(const std::string category, const std::string name, double price, int qty, const std::string genre, const std::string rating);
@@ -16,6 +18,7 @@ public:
     void dump(std::ostream& os) const;
     std::string getGenre() const;
     std::string getRating() const;
+    
 
 protected:
     std::string genre_;
